@@ -1,0 +1,46 @@
+-- ASN1START
+PDU DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+-- PDSUs-START
+
+PDSUs ::= SEQUENCE OF PDSU
+
+PDSU ::=  SEQUENCE {
+    streamId                   INTEGER,
+    --granularityPeriodEndTime   DATE-TIME,   
+    standardizedMeasResults    SEQUENCE OF MeasValue,
+    vendorSpecificMeasResults  SEQUENCE OF MeasValue OPTIONAL -- may be omitted
+}
+
+MeasValue ::= CHOICE {
+    integerValue   INTEGER,
+    --realValue      REAL,
+    stringValue    VisibleString,
+    subCounters    SubCounterListType,
+    ...                                             -- allow extension in futher version
+}
+
+-- uses recursion for the value to support multi-dimensional measurements
+SubCounterListType ::= SEQUENCE {
+    subCounterIndex   SubCounterIndexType,     
+    subCounterValue   MeasValue OPTIONAL            -- "empty" bins are allowed
+} 
+
+SubCounterIndexType ::= CHOICE {
+    sum       VisibleString ("SUM"),
+    binIndex  INTEGER,
+    qOS-5QI   INTEGER,
+    qOS-QCI   INTEGER,
+    cause     INTEGER,
+    stringIndex   VisibleString,
+    plMN      OCTET STRING (SIZE(3)),              -- definition from TS 38.413
+    sNSSAI    SEQUENCE {                           -- definition from TS 38.413
+        sst   OCTET STRING (SIZE(1)),
+        sd    OCTET STRING (SIZE(3))
+    },
+    ...                                            -- allow extension in futher version
+}
+
+-- PDSUs-STOP
+END
+-- ASN1STOP
