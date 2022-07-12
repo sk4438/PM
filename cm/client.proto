@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package netconf_client;
+
+option go_package = "./pb";
+
+message RpcRequest {
+    string oran_node_ip = 1;
+    string rpc_msg = 2;
+}
+message RpcResponse {
+    string oran_node_ip = 1;
+    string rpc_reply = 2;
+    
+}
+message TraceInfo {
+    string tbd = 1;
+}
+message PerformanceInfo{
+    string jobId=1;
+    repeated string performanceMetrics=2;
+    string measObjDn=3;
+}
+
+
+message StreamInfo {
+    string streamID = 1;
+    string streamType = 2; // trace, performance, analytics etc.
+    string serializationFormat = 3; // gpb, asn1
+    oneof info {
+        PerformanceInfo performanceinfo = 4;
+        TraceInfo traceinfo = 5;
+    }
+
+}
+
+message StreamMessageRequest {
+    StreamInfo streaminfo = 1;
+    enum Type {
+        ADD = 0;
+        DELETE = 1;
+    }
+    Type type = 2;
+}
+message StreamMessageResponse{
+    string streamID=1;
+    
+    string type = 2;
+
+}
+
+
+

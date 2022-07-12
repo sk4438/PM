@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "assert.h": "c",
+        "measvalue.h": "c",
+        "subcounterindextype.h": "c",
+        "types.h": "c",
+        "pdsus.h": "c",
+        "nats.h": "c"
+    }
+}
